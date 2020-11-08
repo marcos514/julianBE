@@ -2,43 +2,74 @@
 // encoded strings, beyond what is provided in the standard "strings" package.
 package core
 
+import "time"
+
 //"time"
 
 //Factura this is a factura
 type Factura struct {
-	ID          int     `json:"id"`
-	ClienteID   int     `json:"cliente"`
-	Fecha       string  `json:"fecha"`
-	PrecioTotal float32 `json:"precio_total"`
+	ID          int       `json:"id"`
+	ClienteID   int       `json:"cliente"`
+	Fecha       time.Time `json:"fecha"`
+	PrecioTotal float32   `json:"precio_total"`
+	productos   []FacturaProducto
 }
 
 //FacturaProducto los productos de la factura
 type FacturaProducto struct {
 	ID         int `json:"id"`
 	producto   Producto
-	ProductoID int     `json:"producto_id"`
-	FacturaID  Factura `json:"factura"`
+	ProductoID int `json:"producto_id"`
+	FacturaID  int `json:"factura"`
 	factura    Factura
 	Precio     float32 `json:"precio"`
 	Cantidad   int     `json:"cantidad"`
 }
 
-//GetFields Guardar Product
-func (f *Factura) GetFields() []string {
-	return GetFields(f)
+type FacturaProductoInterface interface {
+	ThisIsFactProd()
 }
 
-//GetValues Guardar Product
-func (f *Factura) GetValues() []string {
-	return GetValues(f)
+//GetPublicFields Guardar Product
+func (f *Factura) GetPublicFields() []string {
+	return GetPublicFields(f)
 }
 
-//GetFields Guardar Product
-func (p *FacturaProducto) GetFields() []string {
-	return GetFields(p)
+//GetPublicValues Guardar Product
+func (f *Factura) GetPublicValues() []string {
+	return GetPublicValues(f)
 }
 
-//GetValues Guardar Product
-func (p *FacturaProducto) GetValues() []string {
-	return GetValues(p)
+func (f *Factura) GetFacturaProducto() []FacturaProducto {
+	return f.productos
+}
+
+func (fp *FacturaProducto) GetProduct() Producto {
+	return fp.producto
+}
+
+func (fp *FacturaProducto) GetFactura() Factura {
+	return fp.factura
+}
+
+//GetPublicFields Guardar Product
+func (fp *FacturaProducto) GetPublicFields() []string {
+	return GetPublicFields(fp)
+}
+
+//GetPublicValues Guardar Product
+func (fp *FacturaProducto) GetPublicValues() []string {
+	return GetPublicValues(fp)
+}
+
+func (f *Factura) AddFacturaProduct(fp FacturaProducto) {
+	f.productos = append(f.productos, fp)
+}
+
+func (fp *FacturaProducto) AddFact(f Factura) {
+	fp.factura = f
+}
+
+func (fp *FacturaProducto) AddProd(p Producto) {
+	fp.producto = p
 }

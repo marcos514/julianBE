@@ -20,12 +20,12 @@ func CrearCliente(s string) string {
 	return string(r)
 }
 
-//GetFields Guardar Product
-func (p *Cliente) GetFields() []string {
-	return GetFields(p)
+//GetPublicFields Guardar Product
+func (p *Cliente) GetPublicFields() []string {
+	return GetPublicFields(p)
 }
 
-//GetValues Guardar Product
-func (p *Cliente) GetValues() []string {
-	return GetValues(p)
+//GetPublicValues Guardar Product
+func (p *Cliente) GetPublicValues() []string {
+	return GetPublicValues(p)
 }

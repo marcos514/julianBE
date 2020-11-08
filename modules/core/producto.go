@@ -27,11 +27,11 @@ func (p Producto) GuardarProducto() []string {
 }
 
 //GetFields Guardar Product
-func (p *Producto) GetFields() []string {
-	return GetFields(p)
+func (p *Producto) GetPublicFields() []string {
+	return GetPublicFields(p)
 }
 
-//GetValues Guardar Product
-func (p *Producto) GetValues() []string {
-	return GetValues(p)
+//GetPublicValues Guardar Product
+func (p *Producto) GetPublicValues() []string {
+	return GetPublicValues(p)
 }

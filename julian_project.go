@@ -5,7 +5,8 @@ import (
 	"fmt"
 	"julian_project/modules/core"
 	csvmodule "julian_project/modules/csvModule"
-	"julian_project/morestrings"
+	"time"
+	//"julian_project/morestrings"
 )
 
 type empData struct {
@@ -59,7 +60,7 @@ func DarDeComer(primate Primate) {
 
 func main() {
 
-	fmt.Println(morestrings.ReverseRunes("!oG ,ollasdasdeH"))
+	//fmt.Println(morestrings.ReverseRunes("!oG ,ollasdasdeH"))
 
 	var clientes = core.Cliente{}
 
@@ -128,7 +129,7 @@ func main() {
 			ID: 15, CantidadUnidad: 50,
 			Nombre: "Marcos", Descripcion: "Rey", Medidas: "15*45", Empresa: "MarcosSA", Codigo: "1234",
 			Precio:     154,
-			Categorias: []string{},
+			Categorias: []string{"marcos"},
 			Activo:     false,
 		},
 	}}
@@ -143,4 +144,48 @@ func main() {
 	}
 	products = append(products, prod)
 	csvmodule.GuardarProductos(products)
+
+	fact := csvmodule.Factura{
+		core.Factura{
+			ID:          1,
+			ClienteID:   2,
+			Fecha:       time.Now(),
+			PrecioTotal: 12,
+		},
+	}
+
+	var facts []csvmodule.Factura
+
+	factProd := csvmodule.FacturaProducto{
+		core.FacturaProducto{
+			ID:         1,
+			ProductoID: prod.ID,
+			FacturaID:  fact.ID,
+			Precio:     prod.Precio,
+			Cantidad:   5,
+		},
+	}
+	fact.AddFacturaProduct(factProd.FacturaProducto)
+	facts = append(facts, fact)
+
+	factProd.AddFact(fact.Factura)
+	factProd.AddProd(prod.Producto)
+
+	csvmodule.GuardarFacturas(facts)
+
+	ahora := time.Now()
+	fmt.Printf("Ahora %v", ahora)
+
+	cliente := []csvmodule.Cliente{{
+		core.Cliente{
+			ID:        0,
+			Mail:      "marcos@smallsforsmalls.com",
+			Nombre:    "Marcos Rey",
+			Direccion: "Amenedo 622",
+			Numero:    "1549168959",
+		},
+	}}
+	csvmodule.GuardarClientes(cliente)
+	csvproductos := csvmodule.ReadProductos()
+	fmt.Println("%v", csvproductos)
 }
