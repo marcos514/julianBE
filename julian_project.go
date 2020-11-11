@@ -168,13 +168,13 @@ func main() {
 	fact.AddFacturaProduct(factProd.FacturaProducto)
 	facts = append(facts, fact)
 
-	factProd.AddFact(fact.Factura)
-	factProd.AddProd(prod.Producto)
+	// factProd.AddFactura(fact.Factura)
+	factProd.AddProducto(prod.Producto)
 
 	csvmodule.GuardarFacturas(facts)
 
-	ahora := time.Now()
-	fmt.Printf("Ahora %v", ahora)
+	// ahora := time.Now()
+	// fmt.Printf("Ahora %v\n", ahora)
 
 	cliente := []csvmodule.Cliente{{
 		core.Cliente{
@@ -187,5 +187,12 @@ func main() {
 	}}
 	csvmodule.GuardarClientes(cliente)
 	csvproductos := csvmodule.ReadProductos()
-	fmt.Println("%v", csvproductos)
+	fmt.Printf("PROYEEEEEEEECCCSSS %v\n\n\n\n", csvproductos)
+	csvfac := csvmodule.ReadFactura()
+	res2B, err := json.Marshal(csvfac)
+	if err != nil {
+
+	}
+	fmt.Println(string(res2B))
+	fmt.Printf("facturaaaaaaaa fecha %v\n", csvfac[0].Fecha.Format(time.ANSIC))
 }

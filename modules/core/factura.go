@@ -8,11 +8,11 @@ import "time"
 
 //Factura this is a factura
 type Factura struct {
-	ID          int       `json:"id"`
-	ClienteID   int       `json:"cliente"`
-	Fecha       time.Time `json:"fecha"`
-	PrecioTotal float32   `json:"precio_total"`
-	productos   []FacturaProducto
+	ID               int       `json:"id"`
+	ClienteID        int       `json:"cliente"`
+	Fecha            time.Time `json:"fecha"`
+	PrecioTotal      float32   `json:"precio_total"`
+	facturaProductos []FacturaProducto
 }
 
 //FacturaProducto los productos de la factura
@@ -41,7 +41,7 @@ func (f *Factura) GetPublicValues() []string {
 }
 
 func (f *Factura) GetFacturaProducto() []FacturaProducto {
-	return f.productos
+	return f.facturaProductos
 }
 
 func (fp *FacturaProducto) GetProduct() Producto {
@@ -63,13 +63,26 @@ func (fp *FacturaProducto) GetPublicValues() []string {
 }
 
 func (f *Factura) AddFacturaProduct(fp FacturaProducto) {
-	f.productos = append(f.productos, fp)
+	f.facturaProductos = append(f.facturaProductos, fp)
 }
 
-func (fp *FacturaProducto) AddFact(f Factura) {
+func (f *Factura) AppendListFacturasProductos(lfp []FacturaProducto) {
+	f.facturaProductos = append(f.facturaProductos, lfp...)
+}
+
+func (fp *FacturaProducto) AddFactura(f Factura) {
 	fp.factura = f
 }
 
-func (fp *FacturaProducto) AddProd(p Producto) {
+func (fp *FacturaProducto) AddProducto(p Producto) {
 	fp.producto = p
+}
+
+func GetFacturaProductosByIds(lfp []FacturaProducto) map[int][]FacturaProducto {
+	var facturaProductosDict map[int][]FacturaProducto
+	for i := 0; i < len(lfp); i++ {
+		fp := lfp[i]
+		facturaProductosDict[fp.ID] = append(facturaProductosDict[fp.ID], []FacturaProducto{fp}...)
+	}
+	return facturaProductosDict
 }

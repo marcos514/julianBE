@@ -7,9 +7,6 @@ import (
 	"julian_project/modules/core"
 	"log"
 	"os"
-	"reflect"
-	"strconv"
-	"strings"
 )
 
 //Producto manejo de productos en los archivos CSVs
@@ -35,7 +32,7 @@ func GuardarProductos(lp []Producto) {
 	}
 	csvwriter.Flush()
 	csvfile.Close()
-	fmt.Printf("This is a Save")
+	fmt.Println("This is a Save")
 }
 
 func (p *Producto) GetPublicFields() []string {
@@ -66,6 +63,7 @@ func ReadProductos() []Producto {
 		}
 		productos = append(productos, prod)
 	}
+	csvfile.Close()
 	return productos
 }
 
@@ -82,63 +80,3 @@ func ReadProductos() []Producto {
 // 	p.Categorias: []string{"sad", "sad", "154"},
 // 	p.Activo:     false,
 // }
-
-func Unmarshal(reader *csv.Reader, v interface{}) error {
-	record, err := reader.Read()
-	if err != nil {
-		return err
-	}
-	s := reflect.ValueOf(v).Elem()
-	fmt.Printf("Fields are %v", s.NumField())
-	fmt.Printf("Fields are for csv %v", len(record))
-	if s.NumField() != len(record) {
-		return &FieldMismatch{s.NumField(), len(record)}
-	}
-	for i := 0; i < s.NumField(); i++ {
-		f := s.Field(i)
-		switch f.Type().String() {
-		case "string":
-			f.SetString(record[i])
-		case "int":
-			ival, err := strconv.ParseInt(record[i], 10, 0)
-			if err != nil {
-				return err
-			}
-			f.SetInt(ival)
-		case "float32":
-			ival, err := strconv.ParseFloat(record[i], 32)
-			if err != nil {
-				return err
-			}
-			f.SetFloat(ival)
-		case "[]string":
-			v := reflect.ValueOf(strings.Split(record[i], ","))
-			f.Set(v)
-		case "bool":
-			ival, err := strconv.ParseBool(record[i])
-			if err != nil {
-				return err
-			}
-			f.SetBool(ival)
-		default:
-			return &UnsupportedType{f.Type().String()}
-		}
-	}
-	return nil
-}
-
-type FieldMismatch struct {
-	expected, found int
-}
-
-func (e *FieldMismatch) Error() string {
-	return "CSV line fields mismatch. Expected " + strconv.Itoa(e.expected) + " found " + strconv.Itoa(e.found)
-}
-
-type UnsupportedType struct {
-	Type string
-}
-
-func (e *UnsupportedType) Error() string {
-	return "Unsupported type: " + e.Type
-}
