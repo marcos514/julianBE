@@ -43,8 +43,8 @@ func (p *Producto) GetPublicValues() []string {
 	return p.Producto.GetPublicValues()
 }
 
-func ReadProductos() []Producto {
-	csvfile, err := os.Open("./store/productos.csv")
+func ReadProductos(fileName string) []Producto {
+	csvfile, err := os.Open(fileName)
 	if err != nil {
 		log.Fatalf("failed open file: %s", err)
 	}
@@ -65,6 +65,77 @@ func ReadProductos() []Producto {
 	}
 	csvfile.Close()
 	return productos
+}
+
+func MapProducts(lc []Producto) map[int]Producto {
+	mapProducto := make(map[int]Producto)
+	for i := 0; i < len(lc); i++ {
+		c := lc[i]
+		mapProducto[c.ID] = c
+	}
+	return mapProducto
+}
+
+func MapToSliceProducts(mp map[int]Producto) []Producto {
+	var lp []Producto
+	for _, p := range mp {
+		lp = append(lp, p)
+	}
+	return lp
+}
+
+func DeshabilitarProductosById(ids []int) []Producto {
+	mp := MapProducts(ReadProductos("./store/productos.csv"))
+	for i := 0; i < len(ids); i++ {
+		p := mp[ids[i]]
+		p.Activo = false
+		mp[ids[i]] = p
+	}
+	lp := MapToSliceProducts(mp)
+	GuardarProductos(lp)
+	return lp
+}
+
+func AgregarProductosDeArchivo(filename string) []Producto {
+	lp := ReadProductos(filename)
+	for i := 0; i < len(lp); i++ {
+		p := lp[i]
+		p.Activo = true
+		lp[i] = p
+	}
+	return ActualizarProductos(lp)
+}
+
+func ActualizarProductos(newlp []Producto) []Producto {
+	lp := ReadProductos("./store/productos.csv")
+	lastProductId := lp[len(lp)-1].ID
+	for i := 0; i < len(newlp); i++ {
+		p := newlp[i]
+		pindex := p.IndexProductoEnLista(lp)
+		if pindex == -1 {
+			lastProductId += 1
+			p.ID = lastProductId
+			lp = append(lp, p)
+		} else {
+			paux := lp[pindex]
+			p.ID = paux.ID
+			lp[pindex] = p
+		}
+	}
+	GuardarProductos(lp)
+	return lp
+}
+
+func (p *Producto) IndexProductoEnLista(lp []Producto) int {
+	index := -1
+	for i := 0; i < len(lp); i++ {
+		paux := lp[i]
+		if p.Codigo == paux.Codigo && p.Descripcion == paux.Descripcion && p.Empresa == paux.Empresa {
+			index = i
+			break
+		}
+	}
+	return index
 }
 
 // func (p *Producto) CsvParse(in string) {

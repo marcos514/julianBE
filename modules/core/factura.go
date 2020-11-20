@@ -2,14 +2,17 @@
 // encoded strings, beyond what is provided in the standard "strings" package.
 package core
 
-import "time"
+import (
+	"time"
+)
 
 //"time"
 
 //Factura this is a factura
 type Factura struct {
-	ID               int       `json:"id"`
-	ClienteID        int       `json:"cliente"`
+	ID               int `json:"id"`
+	ClienteID        int `json:"cliente"`
+	cliente          Cliente
 	Fecha            time.Time `json:"fecha"`
 	PrecioTotal      float32   `json:"precio_total"`
 	facturaProductos []FacturaProducto
@@ -70,12 +73,38 @@ func (f *Factura) AppendListFacturasProductos(lfp []FacturaProducto) {
 	f.facturaProductos = append(f.facturaProductos, lfp...)
 }
 
+// func (f Factura) AppendFactura(lfp []FacturaProducto) []FacturaProducto {
+// 	for i := 0; i < len(lfp); i++ {
+// 		fp := lfp[i]
+// 		fp.factura = f
+// 		lfp[i] = fp
+// 	}
+// 	return lfp
+// }
+
+// func AgregarFactura(lfp []FacturaProducto, f Factura) []FacturaProducto {
+// 	for i := 0; i < len(lfp); i++ {
+// 		fp := lfp[i]
+// 		fp.AddFactura(f)
+// 		lfp[i] = fp
+// 	}
+// 	return lfp
+// }
+
 func (fp *FacturaProducto) AddFactura(f Factura) {
 	fp.factura = f
 }
 
 func (fp *FacturaProducto) AddProducto(p Producto) {
 	fp.producto = p
+}
+
+func (f *Factura) SetCliente(c Cliente) {
+	f.cliente = c
+}
+
+func (f *Factura) GetCliente() Cliente {
+	return f.cliente
 }
 
 func GetFacturaProductosByIds(lfp []FacturaProducto) map[int][]FacturaProducto {

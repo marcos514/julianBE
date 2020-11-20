@@ -76,7 +76,7 @@ func (fp *FacturaProducto) GetValues() []string {
 	return fp.FacturaProducto.GetPublicValues()
 }
 
-func ReadFactura() []Factura {
+func ReadFacturas() []Factura {
 	csvfile, err := os.Open("./store/facturas_productos.csv")
 	if err != nil {
 		log.Fatalf("failed open file: %s", err)
@@ -88,6 +88,8 @@ func ReadFactura() []Factura {
 	reader.Read()
 	var fac Factura
 	var facProd FacturaProducto
+	lp := ReadProductos("./store/productos")
+	productosMap := MapProducts(lp)
 	//Read Factura Productos
 	for {
 		err := Unmarshal(reader, &facProd.FacturaProducto)
@@ -97,10 +99,13 @@ func ReadFactura() []Factura {
 		if err != nil {
 			panic(err)
 		}
+		facProd.AddProducto(productosMap[facProd.ProductoID].Producto)
 		facturasProductos = append(facturasProductos, facProd)
 	}
 	facturaProductosIds := GetFacturaProductosByIds(facturasProductos)
 	csvfile.Close()
+	lc := ReadClientes()
+	clientesMap := MapClientes(lc)
 
 	csvfile, err = os.Open("./store/facturas.csv")
 	if err != nil {
@@ -119,6 +124,7 @@ func ReadFactura() []Factura {
 			panic(err)
 		}
 		fac.AppendListFacturasProductos(facturaProductosIds[fac.ID])
+		fac.SetCliente(clientesMap[fac.ClienteID].Cliente)
 		facturas = append(facturas, fac)
 	}
 	csvfile.Close()
@@ -145,4 +151,56 @@ func ConvertFactProducto(lfp []FacturaProducto) []core.FacturaProducto {
 		facturaProductos = append(facturaProductos, fp.FacturaProducto)
 	}
 	return facturaProductos
+}
+
+func (f *Factura) PrintFactura() {
+	fmt.Printf(
+		`
+		Factura:
+			ID: %v
+			cliente: %v
+			Fecha: %v
+			PrecioTotal: %v
+			facturaProductos: %v
+		`, f.ID, f.GetCliente(), f.Fecha.Format(time.ANSIC), f.PrecioTotal, f.GetFacturaProducto()[0].GetFactura(),
+	)
+}
+
+func AgregarFactura(f Factura) []Factura {
+	lf := ReadFacturas()
+	lastFacturaId := lf[len(lf)-1].ID
+	f.ID = lastFacturaId
+	lf = append(lf, f)
+	GuardarFacturas(lf)
+	return lf
+}
+
+func ActualizarFactura(f Factura) []Factura {
+	lf := ReadFacturas()
+	findex := f.IndexFacturaEnLista(lf)
+	if findex == -1 {
+		lastFacturaId := lf[len(lf)-1].ID
+		f.ID = lastFacturaId
+		lf = append(lf, f)
+	} else {
+		lf[findex] = f
+	}
+	GuardarFacturas(lf)
+	return lf
+}
+
+func (f *Factura) IndexFacturaEnLista(lf []Factura) int {
+	index := -1
+	for i := 0; i < len(lf); i++ {
+		faux := lf[i]
+		if (f.ClienteID == faux.ClienteID && f.Fecha == faux.Fecha) || f.ID == faux.ID {
+			index = i
+			break
+		}
+	}
+	return index
+}
+
+func (f *Factura) ImprimirFacturaCSV() {
+
 }
