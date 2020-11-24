@@ -126,20 +126,20 @@ func main() {
 
 	products := []csvmodule.Producto{{
 		Producto: core.Producto{
-			ID: 15, CantidadUnidad: 50,
+			ID: 0, CantidadUnidad: 50,
 			Nombre: "Marcos", Descripcion: "Rey", Medidas: "15*45", Empresa: "MarcosSA", Codigo: "1234",
 			Precio:     154,
 			Categorias: []string{"marcos"},
-			Activo:     false,
+			Activo:     true,
 		},
 	}}
 	prod := csvmodule.Producto{
 		core.Producto{
-			ID: 15, CantidadUnidad: 50,
-			Nombre: "Marcosasdsa", Descripcion: "Redsady", Medidas: "15*454", Empresa: "MarcosSA2", Codigo: "2459",
+			ID: 1, CantidadUnidad: 50,
+			Nombre: "Primer Producto Bueno", Descripcion: "Redsady", Medidas: "15*454", Empresa: "MarcosSA2", Codigo: "2459",
 			Precio:     154,
 			Categorias: []string{"sad", "sad", "154"},
-			Activo:     false,
+			Activo:     true,
 		},
 	}
 	products = append(products, prod)
@@ -148,7 +148,7 @@ func main() {
 	fact := csvmodule.Factura{
 		core.Factura{
 			ID:          1,
-			ClienteID:   2,
+			ClienteID:   0,
 			Fecha:       time.Now(),
 			PrecioTotal: 12,
 		},
@@ -186,13 +186,23 @@ func main() {
 		},
 	}}
 	csvmodule.GuardarClientes(cliente)
-	csvproductos := csvmodule.ReadProductos()
+	csvproductos := csvmodule.ReadProductos("./store/productos.csv")
 	fmt.Printf("PROYEEEEEEEECCCSSS %v\n\n\n\n", csvproductos)
-	csvfac := csvmodule.ReadFactura()
-	res2B, err := json.Marshal(csvfac)
+	// clientesCsv := csvmodule.ReadClientes()
+	csvfac := csvmodule.ReadFacturas()
+	res2B, err := json.Marshal(csvfac[0].GetFacturaProducto())
 	if err != nil {
 
 	}
 	fmt.Println(string(res2B))
 	fmt.Printf("facturaaaaaaaa fecha %v\n", csvfac[0].Fecha.Format(time.ANSIC))
+	csvfac[0].PrintFactura()
+
+	ids := []int{1}
+	csvmodule.DeshabilitarProductosById(ids)
+
+	fmt.Printf("%v", csvmodule.AgregarProductosDeArchivo("./store/newproductos.csv"))
+
+	csvfac[0].ImprimirFacturaCSV()
+
 }

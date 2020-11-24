@@ -88,7 +88,7 @@ func ReadFacturas() []Factura {
 	reader.Read()
 	var fac Factura
 	var facProd FacturaProducto
-	lp := ReadProductos("./store/productos")
+	lp := ReadProductos("./store/productos.csv")
 	productosMap := MapProducts(lp)
 	//Read Factura Productos
 	for {
@@ -202,5 +202,39 @@ func (f *Factura) IndexFacturaEnLista(lf []Factura) int {
 }
 
 func (f *Factura) ImprimirFacturaCSV() {
+	facturaPath := fmt.Sprintf("./facturas/%v-%v.csv", f.GetCliente().Nombre, f.Fecha.Format("2006-01-02"))
+	csvFacturas, err := os.Create(facturaPath)
+	if err != nil {
+		log.Fatalf("failed creating file: %s", err)
+	}
+	facturasWriter := csv.NewWriter(csvFacturas)
+	facturasWriter.Comma = ','
 
+	facturasWriter.Write([]string{
+		"Producto", "Medidas", "Cantidad x Unidad", "Precio Unidad", "Cantidad", "Precio",
+	})
+	lfp := f.GetFacturaProducto()
+	var precioTotal float32
+	for i := 0; i < len(lfp); i++ {
+		fp := lfp[i]
+		p := fp.GetProduct()
+		cantidadUnidad := fmt.Sprintf("%v", p.CantidadUnidad)
+		if p.CantidadUnidad != '1' {
+			cantidadUnidad = "1 X " + cantidadUnidad
+		}
+		strPrecioProducto := fmt.Sprintf("$%v", p.Precio)
+		strCantidad := fmt.Sprintf("%v", fp.Cantidad)
+		precioTotalProducto := fp.Precio * float32(fp.Cantidad)
+		strPrecioTotalProducto := fmt.Sprintf("$%.2f", precioTotalProducto)
+		precioTotal += precioTotalProducto
+		facturasWriter.Write([]string{
+			p.Nombre, p.Medidas, cantidadUnidad, strPrecioProducto, strCantidad, strPrecioTotalProducto,
+		})
+	}
+	facturasWriter.Write([]string{
+		"", "", "", "", "Precio Total", fmt.Sprintf("$%.2f", precioTotal),
+	})
+	facturasWriter.Flush()
+	csvFacturas.Close()
+	fmt.Printf("Factura Saved")
 }
