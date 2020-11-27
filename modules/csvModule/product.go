@@ -4,9 +4,10 @@ import (
 	"encoding/csv"
 	"fmt"
 	"io"
-	"julian_project/modules/core"
 	"log"
 	"os"
+
+	"github.com/marcos514/julianBE/modules/core"
 )
 
 //Producto manejo de productos en los archivos CSVs

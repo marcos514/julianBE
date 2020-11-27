@@ -2,11 +2,12 @@ package csvmodule
 
 import (
 	"encoding/csv"
-	"julian_project/modules/core"
 	"reflect"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/marcos514/julianBE/modules/core"
 )
 
 func Unmarshal(reader *csv.Reader, v interface{}) error {

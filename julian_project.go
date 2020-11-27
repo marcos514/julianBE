@@ -3,9 +3,10 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"julian_project/modules/core"
-	csvmodule "julian_project/modules/csvModule"
 	"time"
+
+	"github.com/marcos514/julianBE/modules/core"
+	csvmodule "github.com/marcos514/julianBE/modules/csvModule"
 	//"julian_project/morestrings"
 )
 
