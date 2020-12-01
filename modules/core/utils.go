@@ -60,8 +60,9 @@ func GetPublicValues(v interface{}) []string {
 			}
 			fieldsValues = append(fieldsValues, b)
 		case time.Time:
-			fmt.Printf("THIS IS THE TIME %v THIS IS THE STRING %v ANSIC %v\n\n\n\n\n\n", v, v.String(), v.Format(time.ANSIC))
 			fieldsValues = append(fieldsValues, v.Format(time.ANSIC))
+		case []string:
+			fieldsValues = append(fieldsValues, strings.Join(v, ","))
 		default:
 			fieldsValues = append(fieldsValues, fmt.Sprintf("%v", v))
 		}

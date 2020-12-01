@@ -130,7 +130,7 @@ func main() {
 			ID: 0, CantidadUnidad: 50,
 			Nombre: "Marcos", Descripcion: "Rey", Medidas: "15*45", Empresa: "MarcosSA", Codigo: "1234",
 			Precio:     154,
-			Categorias: []string{"marcos"},
+			Categorias: []string{"marcos", "12345"},
 			Activo:     true,
 		},
 	}}
@@ -139,7 +139,7 @@ func main() {
 			ID: 1, CantidadUnidad: 50,
 			Nombre: "Primer Producto Bueno", Descripcion: "Redsady", Medidas: "15*454", Empresa: "MarcosSA2", Codigo: "2459",
 			Precio:     154,
-			Categorias: []string{"sad", "sad", "154"},
+			Categorias: []string{"sad", "sad", "15asdsa4"},
 			Activo:     true,
 		},
 	}
