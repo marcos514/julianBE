@@ -1,3 +1,3 @@
 ID,CantidadUnidad,Nombre,Descripcion,Medidas,Empresa,Codigo,Precio,Categorias,Activo
-0,1,Producto Nuevo Uno,PRIMERO,,MarcosSA2,0123,99999,[[sad sad 154]],false
-0,12,Producto Nuevo Dos,SEGUNDO,40,MarcosSA,01234,20,[[marcos]],true
+-2,1,Producto Nuevo Uno,PRIMERO,,MarcosSA2,0123,99999,"sad,sad 154",false
+-2,12,Producto Nuevo Dos,SEGUNDO CAMBIADO,40,MarcosSA,01234,20,"marcos,87878",true

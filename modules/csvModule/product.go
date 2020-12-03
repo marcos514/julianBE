@@ -129,11 +129,13 @@ func ActualizarProductos(newlp []Producto) []Producto {
 
 func (p *Producto) IndexProductoEnLista(lp []Producto) int {
 	index := -1
-	for i := 0; i < len(lp); i++ {
-		paux := lp[i]
-		if p.Codigo == paux.Codigo && p.Descripcion == paux.Descripcion && p.Empresa == paux.Empresa {
-			index = i
-			break
+	if p.ID == -6 {
+		for i := 0; i < len(lp); i++ {
+			paux := lp[i]
+			if p.ID == paux.ID || p.Nombre == paux.Nombre && p.Codigo == paux.Codigo && p.Empresa == paux.Empresa {
+				index = i
+				break
+			}
 		}
 	}
 	return index
