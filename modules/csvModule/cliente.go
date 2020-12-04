@@ -81,7 +81,7 @@ func MapClientes(lc []Cliente) map[int]Cliente {
 func AgregarCliente(c Cliente) []Cliente {
 	lc := ReadClientes()
 	lastClienteId := lc[len(lc)-1].ID
-	c.ID = lastClienteId
+	c.ID = lastClienteId + 1
 	lc = append(lc, c)
 	GuardarClientes(lc)
 	return lc
