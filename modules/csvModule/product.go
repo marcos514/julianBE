@@ -128,6 +128,10 @@ func ActualizarProductos(newlp []Producto) []Producto {
 	return lp
 }
 
+func ActualizarProducto(newp Producto) []Producto {
+	return ActualizarProductos([]Producto{newp})
+}
+
 func (p *Producto) IndexProductoEnLista(lp []Producto) int {
 	index := -1
 	if p.ID != -6 {
