@@ -132,7 +132,7 @@ func (p *Producto) IndexProductoEnLista(lp []Producto) int {
 	if p.ID == -6 {
 		for i := 0; i < len(lp); i++ {
 			paux := lp[i]
-			if p.ID == paux.ID || p.Nombre == paux.Nombre && p.Codigo == paux.Codigo && p.Empresa == paux.Empresa {
+			if p.ID == paux.ID || (p.Nombre == paux.Nombre && p.Codigo == paux.Codigo && p.Empresa == paux.Empresa) {
 				index = i
 				break
 			}
