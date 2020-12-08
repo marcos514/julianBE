@@ -112,8 +112,9 @@ func ActualizarProductos(newlp []Producto) []Producto {
 	lastProductId := lp[len(lp)-1].ID
 	for i := 0; i < len(newlp); i++ {
 		p := newlp[i]
+		fmt.Print("This is the PRODUCTO ", p)
 		pindex := p.IndexProductoEnLista(lp)
-		if pindex == -1 {
+		if pindex < 0 {
 			lastProductId += 1
 			p.ID = lastProductId
 			lp = append(lp, p)
@@ -129,7 +130,7 @@ func ActualizarProductos(newlp []Producto) []Producto {
 
 func (p *Producto) IndexProductoEnLista(lp []Producto) int {
 	index := -1
-	if p.ID == -6 {
+	if p.ID != -6 {
 		for i := 0; i < len(lp); i++ {
 			paux := lp[i]
 			if p.ID == paux.ID || (p.Nombre == paux.Nombre && p.Codigo == paux.Codigo && p.Empresa == paux.Empresa) {
