@@ -103,11 +103,13 @@ func ActualizarCliente(c Cliente) []Cliente {
 
 func (c *Cliente) IndexClienteEnLista(lc []Cliente) int {
 	index := -1
-	for i := 0; i < len(lc); i++ {
-		caux := lc[i]
-		if c.Mail == caux.Mail || c.ID == caux.ID {
-			index = i
-			break
+	if c.ID != -6 {
+		for i := 0; i < len(lc); i++ {
+			caux := lc[i]
+			if c.Mail == caux.Mail || c.ID == caux.ID {
+				index = i
+				break
+			}
 		}
 	}
 	return index
