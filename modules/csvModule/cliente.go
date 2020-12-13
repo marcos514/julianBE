@@ -92,7 +92,7 @@ func ActualizarCliente(c Cliente) []Cliente {
 	cindex := c.IndexClienteEnLista(lc)
 	if cindex == -1 {
 		lastFacturaId := lc[len(lc)-1].ID
-		c.ID = lastFacturaId
+		c.ID = lastFacturaId + 1
 		lc = append(lc, c)
 	} else {
 		lc[cindex] = c
