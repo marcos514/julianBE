@@ -106,7 +106,7 @@ func (c *Cliente) IndexClienteEnLista(lc []Cliente) int {
 	if c.ID != -6 {
 		for i := 0; i < len(lc); i++ {
 			caux := lc[i]
-			if c.Mail == caux.Mail || c.ID == caux.ID {
+			if c.ID == caux.ID || c.Mail == caux.Mail {
 				index = i
 				break
 			}
