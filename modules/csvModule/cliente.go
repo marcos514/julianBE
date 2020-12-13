@@ -90,9 +90,12 @@ func AgregarCliente(c Cliente) []Cliente {
 func ActualizarCliente(c Cliente) []Cliente {
 	lc := ReadClientes()
 	cindex := c.IndexClienteEnLista(lc)
-	if cindex == -1 {
-		lastFacturaId := lc[len(lc)-1].ID
-		c.ID = lastFacturaId + 1
+	fmt.Print("Cliente ID " + string(cindex))
+	lastFacturaId := lc[len(lc)-1].ID
+	if cindex < 0 {
+		fmt.Print("ENTRO EN EL NUEVO INDEX")
+		lastFacturaId += 1
+		c.ID = lastFacturaId
 		lc = append(lc, c)
 	} else {
 		lc[cindex] = c
