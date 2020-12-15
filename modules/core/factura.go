@@ -10,11 +10,11 @@ import (
 
 //Factura this is a factura
 type Factura struct {
-	ID               int `json:"id"`
-	ClienteID        int `json:"cliente"`
+	ID               int
+	ClienteID        int
 	cliente          Cliente
-	Fecha            time.Time `json:"fecha"`
-	PrecioTotal      float32   `json:"precio_total"`
+	Fecha            time.Time
+	PrecioTotal      float32
 	facturaProductos []FacturaProducto
 }
 
