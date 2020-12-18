@@ -26,7 +26,7 @@ func GetPublicFields(v interface{}) []string {
 
 func GetPublicFieldsReflect(v interface{}) []reflect.Value {
 	// v = reflect.ValueOf(v).Interface().(interface{})
-	fmt.Printf("First val %v\n", v)
+	// fmt.Printf("First val %v\n", v)
 	val := reflect.ValueOf(v).Elem()
 	var fields []reflect.Value
 

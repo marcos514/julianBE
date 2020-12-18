@@ -77,17 +77,15 @@ func (fp *FacturaProducto) GetValues() []string {
 	return fp.FacturaProducto.GetPublicValues()
 }
 
-func ReadFacturas() []Factura {
+func ReadFacturaProductos() []FacturaProducto {
 	csvfile, err := os.Open("./store/facturas_productos.csv")
 	if err != nil {
 		log.Fatalf("failed open file: %s", err)
 	}
 	var reader = csv.NewReader(csvfile)
 	reader.Comma = ','
-	var facturas []Factura
 	var facturasProductos []FacturaProducto
 	reader.Read()
-	var fac Factura
 	var facProd FacturaProducto
 	lp := ReadProductos("./store/productos.csv")
 	productosMap := MapProducts(lp)
@@ -103,16 +101,23 @@ func ReadFacturas() []Factura {
 		facProd.AddProducto(productosMap[facProd.ProductoID].Producto)
 		facturasProductos = append(facturasProductos, facProd)
 	}
+	return facturasProductos
+}
+
+func ReadFacturas() []Factura {
+	var facturas []Factura
+	var fac Factura
+
+	facturasProductos := ReadFacturaProductos()
 	facturaProductosIds := GetFacturaProductosByIds(facturasProductos)
-	csvfile.Close()
 	lc := ReadClientes()
 	clientesMap := MapClientes(lc)
 
-	csvfile, err = os.Open("./store/facturas.csv")
+	csvfile, err := os.Open("./store/facturas.csv")
 	if err != nil {
 		log.Fatalf("failed open file: %s", err)
 	}
-	reader = csv.NewReader(csvfile)
+	reader := csv.NewReader(csvfile)
 	reader.Comma = ','
 	reader.Read()
 	//Read Facturas
@@ -181,7 +186,7 @@ func ActualizarFactura(f Factura) []Factura {
 	findex := f.IndexFacturaEnLista(lf)
 	if findex == -1 {
 		lastFacturaId := lf[len(lf)-1].ID
-		f.ID = lastFacturaId
+		f.ID = lastFacturaId + 1
 		lf = append(lf, f)
 	} else {
 		lf[findex] = f
@@ -238,4 +243,18 @@ func (f *Factura) ImprimirFacturaCSV() {
 	facturasWriter.Flush()
 	csvFacturas.Close()
 	fmt.Printf("Factura Saved")
+}
+
+func (fp *FacturaProducto) IndexFacturaProductoEnLista(lfp []FacturaProducto) int {
+	index := -1
+	if fp.ID != -6 {
+		for i := 0; i < len(lfp); i++ {
+			fpaux := lfp[i]
+			if fp.ID == fpaux.ID || (fp.ProductoID == fpaux.ProductoID && fp.FacturaID == fpaux.FacturaID) {
+				index = i
+				break
+			}
+		}
+	}
+	return index
 }

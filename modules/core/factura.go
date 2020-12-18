@@ -20,13 +20,13 @@ type Factura struct {
 
 //FacturaProducto los productos de la factura
 type FacturaProducto struct {
-	ID         int `json:"id"`
+	ID         int
 	producto   Producto
-	ProductoID int `json:"producto_id"`
-	FacturaID  int `json:"factura"`
+	ProductoID int
+	FacturaID  int
 	factura    Factura
-	Precio     float32 `json:"precio"`
-	Cantidad   int     `json:"cantidad"`
+	Precio     float32
+	Cantidad   int
 }
 
 type FacturaProductoInterface interface {
@@ -114,4 +114,18 @@ func GetFacturaProductosByIds(lfp []FacturaProducto) map[int][]FacturaProducto {
 		facturaProductosDict[fp.ID] = append(facturaProductosDict[fp.ID], []FacturaProducto{fp}...)
 	}
 	return facturaProductosDict
+}
+
+func (fp *FacturaProducto) IndexFacturaProductoEnLista(lfp []FacturaProducto) int {
+	index := -1
+	if fp.ID != -6 {
+		for i := 0; i < len(lfp); i++ {
+			fpaux := lfp[i]
+			if fp.ID == fpaux.ID || (fp.ProductoID == fpaux.ProductoID && fp.FacturaID == fpaux.FacturaID) {
+				index = i
+				break
+			}
+		}
+	}
+	return index
 }
