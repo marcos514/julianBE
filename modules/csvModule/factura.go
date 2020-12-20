@@ -53,7 +53,7 @@ func GuardarFacturaProductos(lfp []core.FacturaProducto, w *csv.Writer, index in
 	lengthProducts := len(lfp)
 	for i := 0; i < lengthProducts; i++ {
 		fp := lfp[i]
-		if i == 0 {
+		if index == 0 && i == 0 {
 			w.Write(fp.GetPublicFields())
 		}
 		w.Write(fp.GetPublicValues())
