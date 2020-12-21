@@ -217,7 +217,7 @@ func (f *Factura) ImprimirFacturaCSV() {
 	facturasWriter.Comma = ','
 
 	facturasWriter.Write([]string{
-		"Producto", "Medidas", "Cantidad x Unidad", "Precio Unidad", "Cantidad", "Precio",
+		"Producto", "Cantidad x Unidad", "Precio Unidad", "Cantidad", "Precio total",
 	})
 	lfp := f.GetFacturaProducto()
 	var precioTotal float32
@@ -234,7 +234,7 @@ func (f *Factura) ImprimirFacturaCSV() {
 		strPrecioTotalProducto := fmt.Sprintf("$%.2f", precioTotalProducto)
 		precioTotal += precioTotalProducto
 		facturasWriter.Write([]string{
-			p.Nombre, p.Medidas, cantidadUnidad, strPrecioProducto, strCantidad, strPrecioTotalProducto,
+			p.Nombre, cantidadUnidad, strPrecioProducto, strCantidad, strPrecioTotalProducto,
 		})
 	}
 	facturasWriter.Write([]string{
