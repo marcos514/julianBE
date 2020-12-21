@@ -39,7 +39,7 @@ func GuardarFacturas(lf []Factura) {
 			f.Fecha.Format(time.ANSIC)
 		}
 		facturasWriter.Write(f.GetValues())
-		GuardarFacturaProductos(f.GetFacturaProducto(), facturasProductosWriter, i, f.ID)
+		GuardarFacturaProductos(f.GetFacturaProducto(), facturasProductosWriter, i)
 	}
 	facturasWriter.Flush()
 	facturasProductosWriter.Flush()
@@ -49,14 +49,13 @@ func GuardarFacturas(lf []Factura) {
 }
 
 //GuardarProductos Guardar una lista de Productos en un csv
-func GuardarFacturaProductos(lfp []core.FacturaProducto, w *csv.Writer, index int, fIndex int) {
+func GuardarFacturaProductos(lfp []core.FacturaProducto, w *csv.Writer, index int) {
 	lengthProducts := len(lfp)
 	for i := 0; i < lengthProducts; i++ {
 		fp := lfp[i]
 		if index == 0 && i == 0 {
 			w.Write(fp.GetPublicFields())
 		}
-		fp.FacturaID = fIndex
 		w.Write(fp.GetPublicValues())
 	}
 	fmt.Printf("This is a Save")
