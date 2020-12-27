@@ -17,7 +17,7 @@ type Producto struct {
 
 //GuardarProductos Guardar una lista de Productos en un csv
 func GuardarProductos(lp []Producto) {
-	csvfile, err := os.Create("./store/productos.csv")
+	csvfile, err := os.Create(fullPath + "/store/productos.csv")
 	if err != nil {
 		log.Fatalf("failed creating file: %s", err)
 	}
@@ -86,7 +86,7 @@ func MapToSliceProducts(mp map[int]Producto) []Producto {
 }
 
 func DeshabilitarProductosById(ids []int) []Producto {
-	mp := MapProducts(ReadProductos("./store/productos.csv"))
+	mp := MapProducts(ReadProductos(fullPath + "/store/productos.csv"))
 	for i := 0; i < len(ids); i++ {
 		p := mp[ids[i]]
 		p.Activo = false
@@ -108,7 +108,7 @@ func AgregarProductosDeArchivo(filename string) []Producto {
 }
 
 func ActualizarProductos(newlp []Producto) []Producto {
-	lp := ReadProductos("./store/productos.csv")
+	lp := ReadProductos(fullPath + "/store/productos.csv")
 	lastProductId := lp[len(lp)-1].ID
 	for i := 0; i < len(newlp); i++ {
 		p := newlp[i]

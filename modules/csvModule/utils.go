@@ -10,6 +10,8 @@ import (
 	"github.com/marcos514/julianBE/modules/core"
 )
 
+var fullPath string
+
 func Unmarshal(reader *csv.Reader, v interface{}) error {
 	record, err := reader.Read()
 	if err != nil {
@@ -78,4 +80,12 @@ type UnsupportedType struct {
 
 func (e *UnsupportedType) Error() string {
 	return "Unsupported type: " + e.Type
+}
+
+func SetFullPath(path string) {
+	fullPath = path
+}
+
+func GetFullPath() string {
+	return fullPath
 }

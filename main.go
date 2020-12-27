@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"os"
 	"time"
 
 	"github.com/marcos514/julianBE/modules/core"
@@ -60,6 +61,13 @@ func DarDeComer(primate Primate) {
 }
 
 func main() {
+	fmt.Println("THIS IS THE DIRECTORY")
+	dir, _ := os.UserHomeDir()
+	fmt.Println(dir)
+	path, _ := os.Getwd()
+	fmt.Println(path)
+
+	csvmodule.SetFullPath(path)
 
 	//fmt.Println(morestrings.ReverseRunes("!oG ,ollasdasdeH"))
 
@@ -166,13 +174,25 @@ func main() {
 			Cantidad:   5,
 		},
 	}
+	factProd2 := csvmodule.FacturaProducto{
+		core.FacturaProducto{
+			ID:         2,
+			ProductoID: 2,
+			FacturaID:  fact.ID,
+			Precio:     prod.Precio,
+			Cantidad:   5,
+		},
+	}
 	fact.AddFacturaProduct(factProd.FacturaProducto)
+	fact.AddFacturaProduct(factProd2.FacturaProducto)
+	fact.AddFacturaProduct(factProd2.FacturaProducto)
+	fact.AddFacturaProduct(factProd2.FacturaProducto)
 	facts = append(facts, fact)
+	fact.PrecioTotal = 100000
 
 	// factProd.AddFactura(fact.Factura)
-	factProd.AddProducto(prod.Producto)
-
-	csvmodule.GuardarFacturas(facts)
+	// factProd.AddProducto(prod.Producto)
+	csvmodule.ActualizarFactura(fact)
 
 	// ahora := time.Now()
 	// fmt.Printf("Ahora %v\n", ahora)
@@ -203,6 +223,17 @@ func main() {
 	csvmodule.DeshabilitarProductosById(ids)
 
 	fmt.Printf("%v", csvmodule.AgregarProductosDeArchivo("./store/newproductos.csv"))
+
+	productos := []csvmodule.Producto{{
+		Producto: core.Producto{
+			ID: 0, CantidadUnidad: 50,
+			Nombre: "MarcosSSSSSSSS", Descripcion: "ReyYYYYYYYYYYYYY", Medidas: "15*45", Empresa: "MarcosSA", Codigo: "1234",
+			Precio:     6666,
+			Categorias: []string{"marcos", "12345"},
+			Activo:     true,
+		},
+	}}
+	csvmodule.ActualizarProductos(productos)
 
 	csvfac[0].ImprimirFacturaCSV()
 

@@ -23,8 +23,8 @@ type FacturaProducto struct {
 
 //GuardarProductos Guardar una lista de Productos en un csv
 func GuardarFacturas(lf []Factura) {
-	csvFacturas, err := os.Create("./store/facturas.csv")
-	csvFacturasProductos, err := os.Create("./store/facturas_productos.csv")
+	csvFacturas, err := os.Create(fullPath + "/store/facturas.csv")
+	csvFacturasProductos, err := os.Create(fullPath + "/store/facturas_productos.csv")
 	if err != nil {
 		log.Fatalf("failed creating file: %s", err)
 	}
@@ -79,7 +79,7 @@ func (fp *FacturaProducto) GetValues() []string {
 }
 
 func ReadFacturaProductos() []FacturaProducto {
-	csvfile, err := os.Open("./store/facturas_productos.csv")
+	csvfile, err := os.Open(fullPath + "/store/facturas_productos.csv")
 	if err != nil {
 		log.Fatalf("failed open file: %s", err)
 	}
@@ -88,7 +88,7 @@ func ReadFacturaProductos() []FacturaProducto {
 	var facturasProductos []FacturaProducto
 	reader.Read()
 	var facProd FacturaProducto
-	lp := ReadProductos("./store/productos.csv")
+	lp := ReadProductos(fullPath + "/store/productos.csv")
 	productosMap := MapProducts(lp)
 	//Read Factura Productos
 	for {
@@ -114,7 +114,7 @@ func ReadFacturas() []Factura {
 	lc := ReadClientes()
 	clientesMap := MapClientes(lc)
 
-	csvfile, err := os.Open("./store/facturas.csv")
+	csvfile, err := os.Open(fullPath + "/store/facturas.csv")
 	if err != nil {
 		log.Fatalf("failed open file: %s", err)
 	}
@@ -209,7 +209,7 @@ func (f *Factura) IndexFacturaEnLista(lf []Factura) int {
 }
 
 func (f *Factura) ImprimirFacturaCSV() {
-	facturaPath := fmt.Sprintf("./facturas/%v-%v.csv", f.GetCliente().Nombre, f.Fecha.Format("2006-01-02"))
+	facturaPath := fmt.Sprintf(fullPath+"/facturas/%v-%v.csv", f.GetCliente().Nombre, f.Fecha.Format("2006-01-02"))
 	csvFacturas, err := os.Create(facturaPath)
 	if err != nil {
 		log.Fatalf("failed creating file: %s", err)

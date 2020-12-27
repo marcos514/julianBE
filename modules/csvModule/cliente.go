@@ -17,7 +17,7 @@ type Cliente struct {
 
 //GuardarProductos Guardar una lista de Productos en un csv
 func GuardarClientes(lc []Cliente) {
-	csvfile, err := os.Create("./store/clientes.csv")
+	csvfile, err := os.Create(fullPath + "/store/clientes.csv")
 	if err != nil {
 		log.Fatalf("failed creating file: %s", err)
 	}
@@ -46,7 +46,7 @@ func (c *Cliente) GetPublicValues() []string {
 }
 
 func ReadClientes() []Cliente {
-	csvfile, err := os.Open("./store/clientes.csv")
+	csvfile, err := os.Open(fullPath + "/store/clientes.csv")
 	if err != nil {
 		log.Fatalf("failed open file: %s", err)
 	}
